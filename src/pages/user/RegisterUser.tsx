@@ -6,6 +6,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { RegisterUserModel } from '../../types/models';
 import { useUser } from '../../context/UserContext';
 import PasswordButton from '../../components/PasswordButton';
+import ProgressBar from '../../components/ProgressBar';
 
 /**
  * RegisterUser
@@ -156,32 +157,11 @@ function RegisterUser() {
                             />
                         </div>
                         
-                        <div>
-                            <div
-                                style={{
-                                    height: 8,
-                                    width: "80%",
-                                    background: "#e5e7eb",
-                                    borderRadius: 4,
-                                    marginTop: 8,
-                                    overflow: "hidden",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        width: `${passwordStrength}%`,
-                                        height: "100%",
-                                        background: passwordStrengthColor,
-                                        transition: "width 200ms ease",
-                                        borderRadius: 4,
-                                    }}
-                                />
-                            </div>
-
-                            <p>
-                                {passwordStrengthLabel} - {passwordStrength}/100
-                            </p>
-                        </div>
+                        <ProgressBar 
+                            percentage={passwordStrength}
+                            color={passwordStrengthColor}
+                            label={passwordStrengthLabel}
+                        />
 
                         <div>
                             <label>Password confirmation:</label>
