@@ -3,6 +3,7 @@ import {useEffect, useMemo, useState} from "react";
 import { postResetPassword } from '../../comunication/FetchUser';
 import { evaluatePasswordStrength } from '../../utils/password';
 import { useUser } from '../../context/UserContext';
+import PasswordButton from '../../components/PasswordButton';
 
 function ResetUserPassword() {
 	const navigate = useNavigate();
@@ -10,7 +11,6 @@ function ResetUserPassword() {
 
 	const [searchParams] = useSearchParams();
 	const [errorMessage, setErrorMessage] = useState("");
-	const [showPasswords, setShowPasswords] = useState(false);
 	const initialValues = {
 		email: "",
 		newPassword: "",
@@ -86,13 +86,9 @@ function ResetUserPassword() {
 
 						<div>
 							<label>New password:</label>
-							<input
-								type={showPasswords ? "text" : "password"}
+							<PasswordButton 
 								value={resetValues.newPassword}
-								onChange={(e) =>
-									setResetValues(prevValues => ({...prevValues, newPassword: e.target.value}))}
-								required
-								placeholder="Please enter your password *"
+								setValue={(newPassword) => setResetValues(prevValues => ({...prevValues, newPassword}))}
 							/>
 						</div>
 
@@ -125,13 +121,9 @@ function ResetUserPassword() {
 
 						<div>
 							<label>Confirm new password:</label>
-							<input
-								type={showPasswords ? "text" : "password"}
+							<PasswordButton 
 								value={resetValues.newPasswordConfirmation}
-								onChange={(e) =>
-									setResetValues(prevValues => ({...prevValues, newPasswordConfirmation: e.target.value}))}
-								required
-								placeholder="Please confirm your password *"
+								setValue={(newPasswordConfirmation) => setResetValues(prevValues => ({...prevValues, newPasswordConfirmation}))}
 							/>
 						</div>
 
@@ -140,15 +132,6 @@ function ResetUserPassword() {
                                 <span style={{color: "red"}}>Passwords don't match!</span>
                             </div>
                         }
-
-						<div>
-                            <input 
-                                type='checkbox'
-                                checked={showPasswords}
-                                onChange={(e) => setShowPasswords(e.target.checked)}
-                                />
-                            <label>Show Passwords</label>
-                        </div>
 
 						{errorMessage && 
 							<div>

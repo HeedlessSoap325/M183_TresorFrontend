@@ -5,6 +5,7 @@ import { evaluatePasswordStrength } from '../../utils/password';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { RegisterUserModel } from '../../types/models';
 import { useUser } from '../../context/UserContext';
+import PasswordButton from '../../components/PasswordButton';
 
 /**
  * RegisterUser
@@ -24,7 +25,6 @@ function RegisterUser() {
     };
     const [credentials, setCredentials] = useState(initialState);
     const [errorMessage, setErrorMessage] = useState('');
-    const [showPasswords, setShowPasswords] = useState(false);
 
     const passwordsMatch = useMemo(() => credentials.password === credentials.passwordConfirmation, [credentials]);
     const canRegister = useMemo(() => 
@@ -150,13 +150,9 @@ function RegisterUser() {
                     <aside>
                         <div>
                             <label>Password:</label>
-                            <input
-                                type={showPasswords ? "text" : "password"}
+                            <PasswordButton 
                                 value={credentials.password}
-                                onChange={(e) =>
-                                    setCredentials(prevValues => ({...prevValues, password: e.target.value}))}
-                                required
-                                placeholder="Please enter your pwd *"
+                                setValue={(password) => setCredentials(prevValues => ({...prevValues, password}))}
                             />
                         </div>
                         
@@ -189,13 +185,9 @@ function RegisterUser() {
 
                         <div>
                             <label>Password confirmation:</label>
-                            <input
-                                type={showPasswords ? "text" : "password"}
+                            <PasswordButton 
                                 value={credentials.passwordConfirmation}
-                                onChange={(e) =>
-                                    setCredentials(prevValues => ({...prevValues, passwordConfirmation: e.target.value}))}
-                                required
-                                placeholder="Please confirm your pwd *"
+                                setValue={(passwordConfirmation) => setCredentials(prevValues => ({...prevValues, passwordConfirmation}))}
                             />
                         </div>
 
@@ -204,15 +196,6 @@ function RegisterUser() {
                                 <span style={{color: "red"}}>Passwords don't match!</span>
                             </div>
                         }
-
-                        <div>
-                            <input 
-                                type='checkbox'
-                                checked={showPasswords}
-                                onChange={(e) => setShowPasswords(e.target.checked)}
-                                />
-                            <label>Show Passwords</label>
-                        </div>
 
                         <div>
                             <ReCAPTCHA

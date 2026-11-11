@@ -3,6 +3,7 @@ import {useState} from "react";
 import {postForgottenPassword, postUserLogin} from "../../comunication/FetchUser";
 import { useUser } from '../../context/UserContext';
 import { LoginUserModel } from '../../types/models';
+import PasswordButton from '../../components/PasswordButton';
 
 /**
  * LoginUser
@@ -65,13 +66,9 @@ function LoginUser() {
                         </div>
                         <div>
                             <label>Password:</label>
-                            <input
-                                type="text"
+                            <PasswordButton 
                                 value={loginUser.password}
-                                onChange={(e) =>
-                                    setLoginUser(prevValues => ({...prevValues, password: e.target.value}))}
-                                required
-                                placeholder="Please enter your password *"
+                                setValue={(password) => setLoginUser(prevValues => ({...prevValues, password}))}
                             />
                         </div>
 
