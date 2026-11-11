@@ -18,12 +18,14 @@ function PasswordButton({value, setValue}: {value: string, setValue: (value: str
                 placeholder="Enter a password"
             />
 
-            <img
-                className="password-icon"
-                src={icon}
-                alt="Toggle password visibility"
-                onClick={() => setShow(!show)}
-            />
+			{value &&
+				<img
+					className="password-icon"
+					src={icon}
+					alt="Toggle password visibility"
+					onClick={() => setShow(!show)}
+				/>
+			}
         </div>
 	);
 }
