@@ -111,7 +111,7 @@ const Secrets = () => {
                             const content = JSON.parse(secret.content);
                             const isEditing = editingId === secret.id;
 
-                            const knownFields: {credential: string[][], note: string[][], creditcard: string[][]} = {
+                            const knownFields: {credential: string[][], note: string[][], creditcard: string[][], error: string[][]} = {
                                 credential: [
                                     ['Username', 'userName', 'text'],
                                     ['Password', 'password', 'password'],
@@ -126,6 +126,9 @@ const Secrets = () => {
                                     ['Card number', 'cardnumber', 'text'],
                                     ['Expiration', 'expiration', 'text'],
                                     ['CVV', 'cvv', 'password']
+                                ],
+                                error: [
+                                    ['Error', 'message', 'text']
                                 ]
                             };
                             const fields: string[] = knownFields[content["kind"]] || [];
@@ -219,7 +222,11 @@ const Secrets = () => {
                                                     Cancel
                                                 </Button>
                                             </>
-                                        ) : (
+                                        ) : content["kind"] === "error" ? (
+                                            <></>
+                                        ) :
+                                        (
+                                            
                                             <Button
                                                 color="primary"
                                                 disabled={editingId !== null}
@@ -231,12 +238,14 @@ const Secrets = () => {
 
                                         {' '}
 
+                                        {content["kind"] !== "error" &&
                                         <Button
                                             color="danger"
                                             onClick={() => handleDeleteSecret(secret.id)}
                                         >
                                             Delete
                                         </Button>
+                                        }
                                     </td>
                                 </tr>
                             );
