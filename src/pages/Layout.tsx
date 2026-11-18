@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 /**
@@ -6,7 +6,13 @@ import { useUser } from "../context/UserContext";
  * @author Peter Rutschmann
  */
 const Layout = () => {
-    const { user } = useUser();
+    const { user, logout } = useUser();
+    const navigate = useNavigate();
+
+    async function logoutAndRedirect() {
+        await logout();
+        navigate("/user/login");
+    }
 
     return (
         <>
@@ -26,7 +32,7 @@ const Layout = () => {
                         <ul>
                             <li><Link to="/user/register">register</Link></li>
                             <li><Link to="/user/login">login</Link></li>
-                            <li><a href="/">logout</a></li> {/* as no link it will reload an cleanup useStates*/}
+                            <li><a onClick={logoutAndRedirect}>logout</a></li>
                         </ul>
                     </li>
                     <li><span>Admin</span>

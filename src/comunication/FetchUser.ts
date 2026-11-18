@@ -52,6 +52,14 @@ export async function postResetPassword(resetPassword: ResetPasswordModel): Prom
     }
 }
 
+export async function logoutUser() {
+    try {
+        await api.post<any>("/auth/logout")
+    } catch (error) {
+        handleAxiosRequestErrors(error);
+    }
+}
+
 export async function checkAccessToken(): Promise<boolean> {
     try {
         const response = await api.post<any>("/auth/check");

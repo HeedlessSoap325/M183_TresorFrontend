@@ -2,6 +2,7 @@ import { createContext,useContext,useState,type ReactNode,type Dispatch,type Set
 import { api, API_URL } from "../comunication/axios";
 import axios from "axios";
 import { AuthResponseModel } from "../types/models";
+import { logoutUser } from "../comunication/FetchUser";
 
 interface User {
 	email: string;
@@ -14,7 +15,7 @@ interface UserContextType {
 	setUser: Dispatch<SetStateAction<User | null>>;
 	setToken: Dispatch<SetStateAction<string>>;
 	isLoggedIn: () => boolean;
-	logout: () => void;
+	logout: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -33,9 +34,10 @@ export function UserProvider({ children }: UserProviderProps) {
 		tokenRef.current = token;
 	}, [token]);
 
-	function logout() {
-		setUser(null);
-		setToken("");
+	async function logout() {
+		await logoutUser();
+		await setUser(null);
+		await setToken("");
 	}
 
 	useEffect(() => {
