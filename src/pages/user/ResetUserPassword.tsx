@@ -50,6 +50,8 @@ function ResetUserPassword() {
 		console.log(resetValues);
 		setErrorMessage("");
 
+		if (!confirm("All saved Secrets will be unreadable after this action.")) return;
+
 		try {
 			const data = await postResetPassword(resetValues);
 			setErrorMessage(data.message);
@@ -123,7 +125,7 @@ function ResetUserPassword() {
 
 				{canRegister && 
 					<div>
-						<span style={{color: "red"}}>Resetting your password WILL DELETE ALL YOUR EXISTING SECRETS!</span>
+						<span style={{color: "red"}}>Resetting your password WILL MAKE ALL YOUR SECRETS UNREADABLE!</span>
 					</div>
 				}
 				
