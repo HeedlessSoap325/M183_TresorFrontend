@@ -47,6 +47,14 @@ function LoginUser() {
         }
     }
 
+    function handleGoogleLogin(): void {
+        window.location.href ="http://localhost:8080/oauth2/authorization/google";
+    }   
+
+    function handleGithubLogin(): void {
+        window.location.href ="http://localhost:8080/oauth2/authorization/github";
+    }   
+
     return (
         <div>
             <h2>Login user</h2>
@@ -82,6 +90,10 @@ function LoginUser() {
                 <button type="submit">Login</button>
                 <br/>   
                 <button onClick={handleForgottenPassword}>Forgotten Password</button>
+                <br/>
+                <button onClick={handleGoogleLogin}>Sign In with Google</button>
+                <br/>
+                <button onClick={handleGithubLogin}>Sign In with GitHub</button>
             </form>
         </div>
     );
