@@ -3,7 +3,7 @@
  * @author Peter Rutschmann
  */
 
-import { RegisterUserModel, AuthResponseModel, UserModel, LoginUserModel, EmailAddressModel, ResetPasswordModel, MessageResponseModel } from "../types/models";
+import { RegisterUserModel, AuthResponseModel, UserModel, LoginUserModel, EmailAddressModel, ResetPasswordModel, MessageResponseModel, TwoFactorAuthenticationEnableResponseModel, TwoFactorAuthenticationVerifyRequestModel } from "../types/models";
 import { api } from "./axios";
 import { handleAxiosRequestErrors } from "../utils/errors";
 
@@ -66,5 +66,32 @@ export async function checkAccessToken(): Promise<boolean> {
         return response.status === 200;
     } catch (error) { // error means response code wasn't ok
         return false;
+    }
+}
+
+export async function postEnable2FA(): Promise<TwoFactorAuthenticationEnableResponseModel> {
+    try {
+        const { data } = await api.post<TwoFactorAuthenticationEnableResponseModel>("/auth/enable2fa");
+        return data;
+    } catch (error) {
+       handleAxiosRequestErrors(error);
+    }
+}
+
+export async function postVerify2FA(twoFactorAuthenticationVerifyRequest: TwoFactorAuthenticationVerifyRequestModel): Promise<boolean> {
+    try {
+        const { request } = await api.post<void>("/auth/verify2fa", twoFactorAuthenticationVerifyRequest);
+        return request.ok;
+    } catch (error) {
+       handleAxiosRequestErrors(error);
+    }
+}
+
+export async function postDisable2FA(): Promise<void> {
+    try {
+        const { data } = await api.post<void>("/auth/disable2fa");
+        return data;
+    } catch (error) {
+       handleAxiosRequestErrors(error);
     }
 }

@@ -14,6 +14,7 @@ import NewCredential from "./pages/secret/NewCredential";
 import NewCreditCard from "./pages/secret/NewCreditCard";
 import NewNote from "./pages/secret/NewNote";
 import { useUser } from './context/UserContext';
+import Enable2FA from './pages/user/Enable2FA';
 
 /**
  * App
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/user/users" element={<Users />}/>
                     <Route path="/user/login" element={<LoginUser />}/>
                     <Route path="/user/register" element={<RegisterUser />}/>
+                    <Route path="/user/enable2fa" element={<Enable2FA />}/>
                     <Route path="/user/reset_password" element={<ResetUserPassword />} />
                     <Route path="/secret/secrets" element={<Secrets />}/>
                     <Route path="/secret/newcredential" element={<NewCredential />}/>

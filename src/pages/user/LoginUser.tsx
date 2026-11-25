@@ -4,6 +4,7 @@ import {postForgottenPassword, postUserLogin} from "../../comunication/FetchUser
 import { useUser } from '../../context/UserContext';
 import { LoginUserModel } from '../../types/models';
 import PasswordButton from '../../components/PasswordButton';
+import OTPInput from '../../components/OTPInput';
 
 /**
  * LoginUser
@@ -17,7 +18,9 @@ function LoginUser() {
     const [loginUser, setLoginUser] = useState<LoginUserModel>({
         email: user?.email || "",
         password: user?.password || "",
+        otp: undefined,
     })
+    const [OTPRequired, setOTPRequired] = useState<boolean>(false);
 
     async function handleSubmit(e: any) {
         e.preventDefault();
@@ -26,13 +29,32 @@ function LoginUser() {
         try {
             const data = await postUserLogin(loginUser);
             setToken(`${data.tokenType}${data.accessToken}`);
-            setUser({ email: loginUser.email, password: loginUser.password });
+            setUser({ email: loginUser.email, password: loginUser.password, twoFAEnabled: false });
+            navigate('/');
+        } catch (error: any) {
+            if (error.message.endsWith("Please provide your OTP")) {
+                setOTPRequired(true);
+            } else {
+                console.error('Failed to fetch to server:', error.message);
+                setErrorMessage(error.message);
+            }
+        }
+    };
+
+    async function handleOTPComplete(code: string) {
+        setErrorMessage("");
+        setLoginUser(prevLoginUser => ({...prevLoginUser, otp: code}));
+
+        try {
+            const data = await postUserLogin({...loginUser, otp: code});
+            setToken(`${data.tokenType}${data.accessToken}`);
+            setUser({ email: loginUser.email, password: loginUser.password, twoFAEnabled: true });
             navigate('/');
         } catch (error: any) {
             console.error('Failed to fetch to server:', error.message);
             setErrorMessage(error.message);
         }
-    };
+    }
 
     async function handleForgottenPassword(e: any) {
         e.preventDefault();
@@ -79,6 +101,13 @@ function LoginUser() {
                                 setValue={(password) => setLoginUser(prevValues => ({...prevValues, password}))}
                             />
                         </div>
+
+                        {OTPRequired && 
+                            <div style={{width: "100%"}}>
+                                <label>OTP:</label>
+                                <OTPInput onComplete={handleOTPComplete} />
+                            </div>
+                        }
 
                         {errorMessage && 
                             <div>

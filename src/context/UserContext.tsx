@@ -7,6 +7,7 @@ import { logoutUser } from "../comunication/FetchUser";
 interface User {
 	email: string;
 	password: string;
+	twoFAEnabled: boolean;
 }
 
 interface UserContextType {

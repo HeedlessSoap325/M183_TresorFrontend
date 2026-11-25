@@ -25,6 +25,7 @@ export interface UserModel {
 export interface LoginUserModel {
 	email: string;
 	password: string;
+	otp?: string;
 }
 
 export interface EmailAddressModel {
@@ -64,4 +65,14 @@ export interface ErrorResponseModel {
 	message: string;
 	status: number;
 	timestamp: string;
+}
+
+export interface TwoFactorAuthenticationEnableResponseModel {
+	secret: string;
+	qrCodeUrl: string;
+}
+
+export interface TwoFactorAuthenticationVerifyRequestModel {
+	email: string;
+	otp: string;
 }

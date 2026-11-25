@@ -1,17 +1,24 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { postDisable2FA } from "../comunication/FetchUser";
 
 /**
  * Layout
  * @author Peter Rutschmann
  */
 const Layout = () => {
-    const { user, logout } = useUser();
+    const { user, setUser, logout } = useUser();
     const navigate = useNavigate();
 
     async function logoutAndRedirect() {
         await logout();
         navigate("/user/login");
+    }
+
+    async function disable2FA() {
+        if (!user) return;
+        await postDisable2FA();
+        setUser(prevValues => ({...prevValues!, twoFAEnabled: false}))
     }
 
     return (
@@ -33,6 +40,14 @@ const Layout = () => {
                             <li><Link to="/user/register">register</Link></li>
                             <li><Link to="/user/login">login</Link></li>
                             <li><a onClick={logoutAndRedirect}>logout</a></li>
+                            {
+                            user && !user.twoFAEnabled &&
+                                <li><Link to="/user/enable2fa">Enable 2FA</Link></li>
+                            }
+                            {
+                            user && user.twoFAEnabled &&
+                                <li><a onClick={disable2FA}>Disable 2FA</a></li>
+                            }
                         </ul>
                     </li>
                     <li><span>Admin</span>
